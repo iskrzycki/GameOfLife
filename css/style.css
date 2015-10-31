@@ -1,0 +1,15 @@
+#board td {
+    width: 15px;
+    height: 18px;
+    border: 1px solid gray;
+}
+
+#board {
+    border-collapse: collapse;
+    border-spacing: 0;
+    margin: 200px auto;
+}
+
+body {
+    background-color: gray;
+}

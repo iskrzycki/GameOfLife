@@ -6,11 +6,24 @@
     <script src="js/jquery-1.11.3.min.js"></script>
     <script src="js/game.js"></script>
     <link rel="stylesheet" href="css/style.css">
-
 </head>
 
 <body>
+    <script>
+        $(document).ready(function () {
+            var board = $("#board");
 
+            GameOfLife.generateCells(CONFIG.rows, CONFIG.cols);
+            GameOfLife.drawCells(board);
+
+            $("#board td").css("background-color", CONFIG.deadCellColor).click(function (e) {
+                GameOfLife.handleCellClick($(this));
+                e.stopPropagation();
+            });
+
+        });
+    </script>
+    <table id="board"></table>
 
 </body>
 
