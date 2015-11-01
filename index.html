@@ -21,9 +21,15 @@
                 e.stopPropagation();
             });
 
+            $("#play").click(function (e) {
+                GameOfLife.play();
+            });
+
         });
     </script>
     <table id="board"></table>
+
+    <p id="play">PLAY</p>
 
 </body>
 

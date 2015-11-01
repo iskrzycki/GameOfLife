@@ -3,6 +3,10 @@ function Cell(row, col) {
     this.col = col;
     this.isAlive = false;
     this.nextIsAlive = false;
+
+    this.updateState = function () {
+        this.isAlive = this.nextIsAlive;
+    };
 }
 
 var CONFIG = {
@@ -35,15 +39,18 @@ var GameOfLife = {
     handleCellClick: function (clickedCell) {
         var col = clickedCell.parent().children().index(clickedCell);
         var row = clickedCell.parent().parent().children().index(clickedCell.parent());
-        this.updateCell(this.getCell(row, col));
+        this.updateCell(this.getCell(row, col), true);
         this.getNeighbours(this.getCell(row, col));
     },
-    updateCell: function (cell) {
+    updateCell: function (cell, changeState) {
         var table = document.getElementById("board");
         var tableRow = table.rows[cell.row];
         var tableCell = tableRow.cells[cell.col];
 
-        cell.isAlive = !cell.isAlive;
+        if (changeState) {
+            cell.isAlive = !cell.isAlive;
+        }
+
         if (cell.isAlive) {
             tableCell.style.backgroundColor = CONFIG.aliveCellColor;
         } else {
@@ -74,7 +81,34 @@ var GameOfLife = {
                 cellArray.splice(i, 1);
             }
         }
-
         return cellArray;
+    },
+    setNextState: function (cell) {
+        var liveNeighboursArray = this.getNeighbours(cell).filter(function (obj) {
+            return obj.isAlive === true;
+        });
+
+        cell.nextIsAlive = false;
+
+        if (cell.isAlive) {
+            if (liveNeighboursArray.length == 2 || liveNeighboursArray.length == 3) {
+                cell.nextIsAlive = true;
+            }
+        } else {
+            if (liveNeighboursArray.length == 3) {
+                cell.nextIsAlive = true;
+            }
+
+        }
+    },
+    play: function () {
+        for (var i = 0, len = this.cells.length; i < len; i = i + 1) {
+            this.setNextState(this.cells[i]);
+        }
+        for (var i = 0, len = this.cells.length; i < len; i = i + 1) {
+            var currentCell = this.cells[i];
+            currentCell.updateState();
+            this.updateCell(currentCell, false);
+        }
     }
 };
