@@ -9,6 +9,9 @@ function Cell(row, col) {
     };
 }
 
+
+
+
 var CONFIG = {
     aliveCellColor: "yellow",
     deadCellColor: "black",
@@ -25,6 +28,13 @@ var GameOfLife = {
                 this.cells.push(new Cell(i, j));
             }
         }
+    },
+    table: undefined,
+    getTable: function () {
+        if (this.table === undefined) {
+            this.table = document.getElementById("board");
+        }
+        return this.table;
     },
     drawCells: function (table) {
         var trString, tdString, i, j;
@@ -43,8 +53,7 @@ var GameOfLife = {
         this.getNeighbours(this.getCell(row, col));
     },
     updateCell: function (cell, changeState) {
-        var table = document.getElementById("board");
-        var tableRow = table.rows[cell.row];
+        var tableRow = this.getTable().rows[cell.row];
         var tableCell = tableRow.cells[cell.col];
 
         if (changeState) {
@@ -110,5 +119,23 @@ var GameOfLife = {
             currentCell.updateState();
             this.updateCell(currentCell, false);
         }
+    },
+    playXTimes: function (howMany) {
+        var i;
+        for (i = 0; i < howMany; i++) {
+            this.play();
+        }
     }
 };
+
+
+(function () {
+
+}());
+
+// TODO list:
+// setInterval
+// randomize
+// load presets
+// color picker
+// let user to config something

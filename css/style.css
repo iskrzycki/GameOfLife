@@ -1,15 +1,25 @@
 #board td {
     width: 15px;
-    height: 18px;
+    height: 15px;
     border: 1px solid gray;
 }
 
 #board {
     border-collapse: collapse;
     border-spacing: 0;
-    margin: 100px auto;
+    margin: auto;
 }
 
 body {
     background-color: gray;
+}
+
+.button {
+    padding: 20px;
+    background-color: yellow;
+    color: red;
+}
+
+.top-buffer {
+    margin-top: 20px;
 }
