@@ -14,12 +14,6 @@ body {
     background-color: gray;
 }
 
-.button {
-    padding: 20px;
-    background-color: yellow;
-    color: red;
-}
-
 .top-buffer {
     margin-top: 20px;
 }

@@ -16,43 +16,27 @@
         $(document).ready(function () {
             var board = $("#board");
 
-            GameOfLife.generateCells(CONFIG.rows, CONFIG.cols);
             GameOfLife.drawCells(board);
+            GameOfLife.generateCells(CONFIG.rows, CONFIG.cols);
 
             $("#board td").css("background-color", CONFIG.deadCellColor).click(function (e) {
                 GameOfLife.handleCellClick($(this));
                 e.stopPropagation();
             });
-
-            $("#play").click(function (e) {
-                GameOfLife.play();
-            });
-
         });
     </script>
-    <div class="row top-buffer"> </div>
 
-    <div class="row">
+    <div class="row top-buffer">
         <div class="col-md-12 text-center">
-
-
             <button type="button" onclick="GameOfLife.playXTimes(1);" class="btn btn-default btn-sm">Make 1 cycle</button>
             <button type="button" onclick="GameOfLife.playXTimes(5);" class="btn btn-default btn-sm">Make 5 cycles</button>
             <button type="button" onclick="GameOfLife.playXTimes(10);" class="btn btn-default btn-sm">Make 10 cycles</button>
         </div>
     </div>
 
-
-
-
-
-
-  <div class="row top-buffer"> </div>
-    <div class="row">
-        <table id="board"></table>
-
-    </div>
+  <div class="row top-buffer">
+    <table id="board"></table>
+  </div>
 
 </body>
-
 </html>
