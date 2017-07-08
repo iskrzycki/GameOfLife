@@ -2,27 +2,29 @@ var CONFIG = {
     aliveCellColor: "yellow",
     deadCellColor: "black",
     rows: 20,
-    cols: 30
+    cols: 30,
+    animationInterval: 500
 };
 
 var GameOfLife = {
     cells: [],
     generateCells: function (rows, cols) {
-        var i, j, k;
+        var i, j, len;
         for (i = 0; i < rows; i++) {
             for (j = 0; j < cols; j++) {
                 this.cells.push(new Cell(i, j));
             }
         }
-        for (k = 0; k < this.cells.length; k++) {
-            this.cells[k].generateNeighbours();
+        for (i = 0, len = this.cells.length; i < len; i++) {
+            this.cells[i].generateNeighbours();
+            this.cells[i].redraw();
         }
     },
     table: undefined,
     getTable: function () {
         return this.table || document.getElementById("board");
     },
-    drawCells: function (table) {
+    prepareBoard: function () {
         var trString, tdString, i, j;
         for (i = 0; i < CONFIG.rows; i++) {
             trString += "<tr></tr>";
@@ -30,7 +32,13 @@ var GameOfLife = {
         for (j = 0; j < CONFIG.cols; j++) {
             tdString += "<td></td>";
         }
-        table.append(trString).find("tr").append(tdString);
+        $("#board").append(trString).find("tr").append(tdString);
+        this.generateCells(CONFIG.rows, CONFIG.cols);
+
+         $("#board td").click(function (e) {
+            GameOfLife.handleCellClick($(this));
+            e.stopPropagation();
+        });
     },
     handleCellClick: function (clickedCell) {
         var parent = clickedCell.parent();
@@ -47,7 +55,7 @@ var GameOfLife = {
         return null;
     },
     getNeighbours: function (cell) {
-        var cellArray = [];
+        var cellArray = [], i = 8;
 
         cellArray.push(this.getCell(cell.row - 1, cell.col));
         cellArray.push(this.getCell(cell.row, cell.col - 1));
@@ -58,11 +66,12 @@ var GameOfLife = {
         cellArray.push(this.getCell(cell.row + 1, cell.col - 1));
         cellArray.push(this.getCell(cell.row - 1, cell.col + 1));
 
-        for (var i = cellArray.length; i--;) {
+        for (; i--;) {
             if (cellArray[i] === null) {
                 cellArray.splice(i, 1);
             }
         }
+
         return cellArray;
     },
     setNextState: function (cell) {
@@ -96,6 +105,19 @@ var GameOfLife = {
         for (i = 0; i < howMany; i++) {
             this.play();
         }
+    },
+    animate: function () {
+        // TODO: toggle animation with clearInterval
+        setInterval(function () {
+            GameOfLife.play();
+        }, CONFIG.animationInterval);
+    },
+    randomize: function () {
+        var i, len;
+        for (i = 0, len = this.cells.length; i < len; i++) {
+            this.cells[i].isAlive = Math.random() > 0.9;
+            this.cells[i].redraw();
+        }
     }
 };
 
@@ -125,9 +147,5 @@ function Cell (row, col) {
     };
 }
 
-// TODO list:
-// setInterval
-// randomize
-// load presets
-// color picker
-// let user to config something
+// TODO:
+// let user to load some interesting presets (see wikipedia)

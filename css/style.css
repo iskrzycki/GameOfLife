@@ -17,3 +17,8 @@ body {
 .top-buffer {
     margin-top: 20px;
 }
+
+.row {
+    margin-right: 0 !important;
+    margin-left: 0 !important;
+}
